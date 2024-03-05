@@ -28,6 +28,7 @@ import { CustomField } from "./CustomField"
 import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
 import { useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
+import MediaUploader from "./MediaUploader"
 
 
 export const formSchema = z.object({
@@ -66,8 +67,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-
-  
+    
   }
 
   const onSelectFieldhandler = (value:string, onChangeField: (value:string) => void) => {
@@ -200,6 +200,23 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
               )}
             </div>
           )}
+
+          <div className="media-uploader-field">
+            <CustomField 
+              control={form.control}
+              name='publicId'
+              className="flex flex-col size-full"
+              render={({field}) => (
+                <MediaUploader 
+                  onValueChange={field.onChange}
+                  publicId={field.value}
+                  setImage={setImage}
+                  image={image}
+                  type={type }
+                />
+              )}
+            />
+          </div>
 
           <div className="flex flex-col gap-4">
           <Button 
