@@ -29,6 +29,8 @@ import { aspectRatioOptions, defaultValues, transformationTypes } from "@/consta
 import { useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import MediaUploader from "./MediaUploader"
+import TransformedImage from "./TransformedImage"
+import { updateCredits } from "@/lib/actions/user.actions"
 
 
 export const formSchema = z.object({
@@ -96,7 +98,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     }, 1000)
   }
 
-  //TODO: Return to updateCredits
+  //TODO: update credit fee to something else
   const onTransformHandler = () => {
     setIsTransforming(true)
 
@@ -107,7 +109,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     setNewTransformation(null)
 
     startTransition(async () => {
-      // await updateCredits(userId, creditFee) 
+      await updateCredits(userId, -1) 
     })
   }
 
@@ -216,6 +218,16 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
                 />
               )}
             />
+
+                <TransformedImage 
+                  image={image}
+                  transformationConfig={transformationConfig}
+                  isTransforming={isTransforming}
+                  type={type}
+                  title={form.getValues().title}
+                  setIsTransforming={setIsTransforming}
+                />
+
           </div>
 
           <div className="flex flex-col gap-4">
